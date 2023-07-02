@@ -1,0 +1,37 @@
+## Parcel Data
+### Parcels and visual analysis
+
+#### Goals
+*Examine a city’s parcel data.
+*Style data by value (“graduated”).
+*Create a new field in the Attribute Table.
+
+#### Introduction
+
+In this tutorial, you’ll be looking more closely at the social and built aspects of your city by visualizing parcel data such as lot value, size, and use category. You’ll learn how to modify the Attribute Tables of existing datasets by creating a new field which draws on two existing fields. The parcel data has already been simplified for easy use, and you will find it in the [data folder](https://drive.google.com/drive/folders/1rmi-Yw8u_1yAtnPLJxglFU6VKfNyIF1w)
+
+#### Where did the parcel data come from?
+
+Often you can find a city’s parcel data by searching for its GIS portal. Many cities have a dedicated GIS database, which is often freely available at least in part. You can often find this by simply Googling “city name Open Data Portal GIS”. Often a city, county, and state will have separate open GIS data portals, so if you can’t find the information in a city’s portal try the county’s instead, or even the state’s. You can often find these as shapefiles or geojsons, which can be easily imported to QGIS. Occasionally you might find the shapefile and its longer Attribute Table as separate files which you need to join (see Tutorial 6-8).
+
+In the examples you’ll be using for this tutorial, each parcel set has been reduced from 20+ fields to only a few fields which I thought were useful or interesting for our purposes. To remove a field from the Attribute Table, you simply double click on the layer and select the “Field” tab, then click the “edit” pencil at the top and remove the selected field with the red minus button. Each city keeps slightly different records and makes slightly different data available to download, so not every city will have the same fields. However, for this tutorial, I’ve kept some combination of:
+*parcel ID
+*address
+*owner
+*owner state
+*parcel value (assessed value)
+*parcel use (eg. residential, commercial)
+
+If available, I’ve also kept:
+*date built
+*square footage built (aka “improvement”)
+*sale data
+*sale value
+*dwellings on parcel
+
+You can start to imagine what interesting patterns about a city you’ll find with these variables. In this tutorial, we’ll be looking mainly at parcel value. You might want to import the redline layer from Tutorial 3 to see what impact those maps may continue to have today on property values. You’ll also notice distinct pockets of gentrification, where a formerly low-value area has recently been rebuilt.
+
+Step 1: Add parcel data to a new QGIS file.
+
+1a First, create a new file. For this one, set your CRS to “NAD83 Virginia Lambert”, which is the CRS used by the state for its parcel data (Project > Properties > CRS).
+
