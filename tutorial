@@ -35,3 +35,140 @@ Step 1: Add parcel data to a new QGIS file.
 
 1a First, create a new file. For this one, set your CRS to “NAD83 Virginia Lambert”, which is the CRS used by the state for its parcel data (Project > Properties > CRS).
 
+PHOTO
+
+1b A few landmarks will be useful to understand the property divisions. Go to Layer > Add Layer > Add Vector Layer and select the city boundary and railroad layers that you saved from the Tutorial 1-3 file (which should be in your “Data” folder). In this example, I will be using Roanoke.
+
+
+
+
+4 PHOTOS
+
+
+
+
+1b Download the parcel data for your city from the Data folder:
+https://drive.google.com/drive/folders/1rmi-Yw8u_1yAtnPLJxglFU6VKfNyIF1w?usp=sharing
+
+Unzip and move the parcel data into your data folder. Note: keep ALL the files, which will include file types like .shp, .dbf, .cpg, .prj, and so on. These all perform different functions that make your shapefile usable. You might want to put the parcel data in its own folder (nested like: City > Data > Parcel)
+
+
+1c In QGIS, go to Layer > Add Layer > Add Vector Layer. Navigate to your data folder and select the parcel data .shp file. Click “Add”.
+
+
+
+3 PHOTOS
+
+
+
+Note: Once your layers are imported, if you notice that the map looks squished, go back to Properties > CRS and re-set it to Lambert.
+
+#### Step 2: Style parcel data by Total Value.
+
+Usually when you import a shapefile, the first step will be to understand what information the file has. Similarly to building information programs like Revit, QGIS objects all have information associated with them, which I’ll also refer to as variables. The Attribute Tables we looked at in previous tutorials display this information. By looking at the parcel data’s Attribute Table, we can see what information is associated with each parcel that we can use to style it. Then, we can start to look for spatial patterns in the map. For instance, if we have information on the assessed value of parcels, we can look for property value trends which might align with other geographic or natural features, or with demographic or historical patterns.
+
+2a Open the parcel layer’s Attribute Table (right click on layer > Attribute Table). Look at the many columns of variables, and notice how complete and thorough this dataset is. Most parcels have most categories filled, in contrast to the OSM data which has only a few entirely filled categories. The parcels’ thorough attribute fields can more accurately show patterns in the parcel data. Look through the different fields and think about what they could tell you about the parcels and the city.
+
+PHOTO
+
+2b First, we’ll look at the Assessed Value of the parcels. Double click on the parcel layer to pull up the Symbology window. Choose the “Graduated” style from the top dropdown menu, and for “Value” select the field which represents the parcel value. It will be called something like “TotalVal1” or “TotalValue” (land value + property or improvement  value). Choose a gradient color spectrum and make sure that “Mode” (bottom left) is set to “Natural Breaks (Jenks)”. Click “Classify”, and then “Apply”.
+
+Note 1: “Natural Breaks” works well to show the range of this data, which contains a huge range unevenly distributed. Try some different Modes to see how different breakdowns of the data look.
+
+Note 2: the graduated style only works with number data, also called “int” (integer) fields. Sometimes numbers are stored as text data (also called “strings”) in spreadsheets. If you don’t see the field you want to use in graduated style, check that the field is an “int” and not a “string” by selecting the “Fields” tab on the left side. You’ll see an “abc” beside string fields, and a “123” beside int fields.
+
+If your value field is text, you won’t see it appear in the graduated style drop-down menu. If you don’t see it, you’ll need to first convert it to an integer. Click the upper case E (aka sigma) symbol to the right of the value box, and in the “Field Calculator” that pops up type in to_int (“NameOfYourField”). Make sure to type in your field name exactly as it appears in the Attribute Table. Alternatively, select the field from the “Fields and Values” drop-down list to the right of the field calculator box.
+
+
+
+3 PHOTOS
+
+
+
+2c Check out the map that you’ve generated. See if you can spot any patterns in the higher value vs. lower value areas of the city. If the map doesn’t show much of a gradient, try a different category “Mode” (lower left of the graduated style window). You can also try a gradient with more color stops – instead of a gradient with one or two colors, try one with several intermediate colors (for instance red-orange-yellow-green instead of just black-white). This is a good way to show more nuance in the data – not just expensive vs. cheaper, but slightly less and slightly more expensive areas.
+
+####Step 3: Create a new data attribute to style parcel data.
+
+The current style shows the value of different parts of Roanoke. You can see that certain neighborhoods (especially the South-West) have generally higher property values than others (notably the North-West). However, this might be attributable to a difference in parcel size. If parcels in the North-West are generally smaller than those in the South-West, that might explain the difference in value. However, because we have the square footage of each parcel, we can find the value per SF to more accurately compare them. To do this, we’ll need to create a new field.
+
+3a Open the Attribute Table again. Since we’re creating a new field based on two existing fields (Total Value and Acreage), we’ll use the Field Calculator. Click the abacus symbol on the upper toolbar, fourth from the right.
+
+PHOTO
+
+3b Make sure that “Create a New Field” is checked. In “Output Field Name”, write “Value-SF”. Output Field type should be “Whole number (integer)”. 
+
+PHOTO
+
+3c You’ll build the expression for the new field in the empty space under “Expression”. The simplest way to do this is by double clicking on fields and symbols from the right-side window, which contains a series of expandable menus. First, click on “Fields and Values” to see the exact names of each field in the parcel Attribute Table. Since we want to get the cost per acre, we’ll divide Total Value by Square Footage. Double click on “TOTALVAL1”, then type a “/” division symbol, and then double click on “Shape-SQFT”. If your city uses acres, you can add in the conversion: (“FieldNameAcres”*43560), where “FieldNameAcres” is the name of your acre field. Make sure this conversion is in parentheses after the division symbol.
+
+PHOTO
+
+
+3d Before you click “OK”, check to make sure the “Preview” in the bottom left does not say “Expression is invalid”. It’s alright if it says “Null”, or it might give you a value. It’s always a good idea to check the Preview before finishing an expression. If that looks good, click “Ok” to create the new field. This may take a while.
+
+PHOTO
+
+3e Before styling the data by the new field, check that the new field looks right in the Attribute Table. Open the parcel layer’s Attribute Table, scroll over to the “Value-SF” field, and make sure that you see values. If the expression failed, you will see only null in the cells. If the field looks correct, click “Save Edits” (upper toolbar, near the left; this may also take a long time), and then click the “Edit” pencil symbol on the far left to leave edit mode. You can then close the attribute table.
+
+PHOTO
+
+3f For the final map, you will show both the “Total Value” map and the “Total Value per SF” map. The easiest way to do this is to copy the parcel layer and style the two separately. Right click on the Parcel layer and click “Duplicate Layer”. Rename the original layer (right click > “Rename”) to “TotalValue”, and the new layer to “TotalValueSF”. 
+
+
+2 PHOTOS
+
+
+3g In the “TotalValueSF” layer, go to the Symbology tab and color the parcels by the new Value-SF field (Graduated, Natural Breaks). Notice which patterns are consistent and which are different between the two maps. For instance, in Roanoke, the difference between the city’s north-west and south-west quadrants persists, which implies that the difference in value relates to neighborhoods more than parcel size.
+
+Like with the total value map, you might try a few different graduated modes and color gradients to show the patterns in your data most clearly:
+
+
+
+
+
+
+
+8 PHOTOS
+
+
+
+
+
+
+
+
+
+#### Step 4: Create a map in Print Layout.
+
+In this print layout, and in the colors and lines of your map, draw attention to some of the geographical patterns visible in your city. Think about an appropriate title and subtitle which talk about the patterns you see, and think about what should and should not be in the map’s legend.
+
+4a Create a new Print Layout and set the size to 11x17”.
+
+
+2 PHOTOS
+
+
+4b Add a Map on one half of the layout. This will show the current top layer. In “Item Properties” on the right, under “Layer”, check “Lock Layers”. This will preserve the current visible layers in this map.
+
+PHOTO
+
+4c Go back to your QGIS data and turn off the first parcel layer (uncheck), and turn on the second parcel layer. Back in the Print Layout, add a second Map. Again, check “Lock Layers”. You should now have two maps, side by side, showing different parcel information.
+
+
+2 PHOTOS
+
+
+4d Add a scale, title, descriptions of each map, byline (your name, date, and data sources). Add a legend to each map. Make sure that legend units are correctly labeled ($/SF and $ respectively; you can either add these symbols before each line in the legend, or add a note at the top “in dollars per SF”)
+
+PHOTO
+
+4e Export your map as a pdf.
+
+
+#### -   Bonus    -
+
+Step 5: Add a third map to your print layout. 
+
+Step 6: Create a new field in the Attribute Table which helps further explain or nuance the two layers already shown. 
+
+Step 7: Clearly explain why you chose this third field through titles and map captions; map captions should include your observations about the map so that the overall relationship between variables shown in each map is obvious.
