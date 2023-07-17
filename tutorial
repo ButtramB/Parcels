@@ -35,7 +35,7 @@ Step 1: Add parcel data to a new QGIS file.
 
 1a First, create a new file. For this one, set your CRS to “NAD83 Virginia Lambert”, which is the CRS used by the state for its parcel data (Project > Properties > CRS).
 
-https://github.com/ButtramB/Parcels/blob/f91c41ea487ed31a042f8cdc8ccbd7d1a3f850cf/1.jpg
+![1](https://github.com/ButtramB/Parcels/blob/f91c41ea487ed31a042f8cdc8ccbd7d1a3f850cf/1.jpg)
 
 1b A few landmarks will be useful to understand the property divisions. Go to Layer > Add Layer > Add Vector Layer and select the city boundary and railroad layers that you saved from the Tutorial 1-3 file (which should be in your “Data” folder). In this example, I will be using Roanoke.
 
